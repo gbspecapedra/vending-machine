@@ -16,7 +16,7 @@ An interactive vending machine simulation built with **React**, **TypeScript**, 
 
 ## 🚀 Live Demo
 
->coming soon
+[See live demo](https://vending-machine-eta-ochre.vercel.app) - Deployed this project on [Vercel](https://vercel.com).
 
 
 ## 🧰 Tech Stack
