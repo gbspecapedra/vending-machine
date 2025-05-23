@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import type { Coin } from "./coin.type";
+import type { Coin, CoinInventory } from "./coin.type";
 import type { Product } from "./product.type";
 import type { CartItem } from "./cart.type";
 
@@ -8,6 +8,7 @@ type VendingMachineContextProps = {
   cart: CartItem[];
   products: Product[];
   messages: string[];
+  coins: CoinInventory;
   initializeProducts: (products: Product[]) => void;
   depositCoin: (coin: Coin) => void;
   addToCart: (product: Product) => void;

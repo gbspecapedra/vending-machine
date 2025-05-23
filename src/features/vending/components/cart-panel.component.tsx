@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useVendingMachine } from "../hooks/useVendingMachine";
 import { CartButtons } from "./cart-buttons.component";
 import { MessageBox } from "./message-box.component";
@@ -13,6 +13,7 @@ export const CartPanel = () => {
     getCartTotal,
     incrementItem,
     decrementItem,
+    coins,
   } = useVendingMachine();
 
   return (
@@ -30,6 +31,10 @@ export const CartPanel = () => {
       <Box borderTop={"1px solid rgba(189, 189, 189, 0.1)"} pt={2}>
         <CartTotal total={getCartTotal()} balance={balance} />
         <CartButtons />
+        <Text fontSize="sm" color="gray.300">
+          Coins in machine: 5¢ x {coins[5]}, 10¢ x {coins[10]}, 25¢ x{" "}
+          {coins[25]}
+        </Text>
       </Box>
     </Flex>
   );

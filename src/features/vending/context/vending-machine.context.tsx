@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { type Coin } from "../types/coin.type";
+import { type Coin, type CoinInventory } from "../types/coin.type";
 import { type Product } from "../types/product.type";
 import { VendingMachineContext } from "../types/vending-machine.type";
 import type { CartItem } from "../types/cart.type";
 import { formatCurrency } from "../utils/currency";
+import { initialCoins } from "../data";
 
 export const VendingMachineProvider = ({
   children,
@@ -13,6 +14,7 @@ export const VendingMachineProvider = ({
   const [cart, setCart] = useState<CartItem[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [balance, setBalance] = useState(0);
+  const [coins, setCoins] = useState<CoinInventory>(initialCoins);
 
   const initialMessage =
     "Welcome! Grab a drink in 3 steps: select, add coins, and hit Buy.";
@@ -63,6 +65,14 @@ export const VendingMachineProvider = ({
       return;
     }
 
+    const changeAmount = balance - total;
+
+    const change = giveChange(changeAmount);
+    if (change === null) {
+      setMessages([`Unable to give change. Please insert exact amount.`]);
+      return;
+    }
+
     const updatedProducts = products.map((product) => {
       const cartItem = cart.find((item) => item.id === product.id);
       if (cartItem) {
@@ -104,6 +114,35 @@ export const VendingMachineProvider = ({
 
   const depositCoin = (coin: Coin) => {
     setBalance((prev) => prev + coin);
+
+    setCoins((prev) => ({
+      ...prev,
+      [coin]: prev[coin] + 1,
+    }));
+  };
+
+  const giveChange = (change: number): CoinInventory | null => {
+    const changeGiven: CoinInventory = { 5: 0, 10: 0, 25: 0 };
+    let remaining = change;
+
+    const coinValues: Coin[] = [25, 10, 5];
+
+    const availableCoins = { ...coins };
+
+    for (const value of coinValues) {
+      while (remaining >= value && availableCoins[value] > 0) {
+        remaining -= value;
+        availableCoins[value]--;
+        changeGiven[value]++;
+      }
+    }
+
+    if (remaining === 0) {
+      setCoins(availableCoins);
+      return changeGiven;
+    } else {
+      return null;
+    }
   };
 
   const getCartTotal = () =>
@@ -150,6 +189,7 @@ export const VendingMachineProvider = ({
         products,
         cart,
         messages,
+        coins,
         initializeProducts,
         purchase,
         depositCoin,
