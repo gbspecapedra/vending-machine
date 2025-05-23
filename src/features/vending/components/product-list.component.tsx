@@ -9,10 +9,10 @@ export const ProductList = () => {
   const { addToCart, products, initializeProducts, cart } = useVendingMachine();
 
   useEffect(() => {
-    if (!loading && drinks.length > 0) {
+    if (products.length < 0 && !loading && drinks.length > 0) {
       initializeProducts(drinks);
     }
-  }, [drinks, initializeProducts, loading]);
+  }, [drinks, initializeProducts, loading, products.length]);
 
   const getQuantity = (id: string) => {
     const item = cart.find((i) => i.id === id);

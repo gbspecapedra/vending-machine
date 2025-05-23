@@ -14,7 +14,7 @@ export const ProductCard = ({
   quantity,
   onClick,
 }: ProductCardProps) => {
-  const isDisabled = product.stock <= 0;
+  const isDisabled = product.stock === 0;
   const bg = useColorModeValue("white", "gray.700");
   const hoverBg = useColorModeValue("gray.100", "gray.600");
 

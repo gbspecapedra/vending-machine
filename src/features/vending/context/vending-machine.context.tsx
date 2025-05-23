@@ -75,13 +75,12 @@ export const VendingMachineProvider = ({
 
     const updatedProducts = products.map((product) => {
       const cartItem = cart.find((item) => item.id === product.id);
-      if (cartItem) {
-        return {
-          ...product,
-          stock: Math.max(0, product.stock - cartItem.quantity),
-        };
-      }
-      return product;
+      if (!cartItem) return product;
+
+      return {
+        ...product,
+        stock: Math.max(0, product.stock - cartItem.quantity),
+      };
     });
 
     setProducts(updatedProducts);
@@ -109,7 +108,7 @@ export const VendingMachineProvider = ({
 
     setTimeout(() => {
       setMessages([initialMessage]);
-    }, 1000);
+    }, 3000);
   };
 
   const depositCoin = (coin: Coin) => {
